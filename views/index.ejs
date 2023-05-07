@@ -1,0 +1,22 @@
+if (!req.session.authenticated) {
+    var html = `
+    Welcome
+    <div><button><a href="/signup">Sign Up</a></button></div>
+    <div><button><a href="/login">Log In</a></button></div>
+`;
+    res.send(html);
+    return;
+}
+else {
+    req.session.isAuth = true;
+    console.log(req.session);
+    var name = await userCollection.find({ email: req.session.email }).project({}).toArray();
+
+    const html =
+    `<h1>Hello ${name[0].username} !</h1>   
+    <div><button><a href="/members">Members Page</a></button></div>
+    <div><button><a href="/logout">Log out</a></button></div>
+    `;
+    res.send(html);
+    return;
+}
