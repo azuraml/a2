@@ -1,17 +1,15 @@
 <%- include("templates/header") %>
+<h1> Hello <%= username %>! </h1>
 
-<!-- <img src='${selectedImage}' alt='random image'>   -->
-<div><button><a href="/logout">Sign Out</a></button></div>
+<a class="btn btn-info rounded-pill px-3" href="/admin">Admins</a>
+<a class="btn btn-warning rounded-pill px-3" href="/members">Members</a>
+<a class="btn btn-success rounded-pill px-3" href="/logout">Log out</a>
+
+<div class="row mb-3 text-center">
+    <div class="col-md-4 themed-grid-col"><img class="img-fluid" src="1.png"></div>
+    <div class="col-md-4 themed-grid-col"><img class="img-fluid" src="2.png"></div>
+    <div class="col-md-4 themed-grid-col"><img class="img-fluid" src="3.png"></div>
+  </div>
 
 <%- include("templates/footer") %>
 
-
-
-
-<!-- // var name = await userCollection.find({ email: req.session.email }).project({}).toArray();
-
-// const images = ['1.png', '2.png', '3.png'];
-// const selectedImage = images[Math.floor(Math.random() * images.length)];
-
-// res.send(`<h1>Hello ${name[0].username}</h1>
-// `) -->

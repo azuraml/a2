@@ -1,3 +1,15 @@
+<style >
+    li { display: block; }
+    span {font-style: italic;}
+  </style>
+  
 <li>
-    <%= user.username %>: <%= user.email %>
+  <b> <%= user.username %> </b>  <span><%= user.user_type %></span> 
+    <form  action = "/promote/<%=user.username%>" method = "post" style="display: inline;">
+        <button class="btn btn-primary rounded-pill px-3" type="submit">Promote</button>
+    </form>
+    <form  action = "/demote/<%=user.username%>" method = "post" style="display: inline;">
+        <button class="btn btn-danger rounded-pill px-3" type="submit">Demote</button>
+    </form>
 </li>
+<br>

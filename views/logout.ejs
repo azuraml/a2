@@ -1,8 +1,5 @@
 
-req.session.destroy();
-var html = `
-<p> You are logged out! <p>  
-<div><button><a href="/">Home</a></button></div>
-
-`;
-res.send(html);
+<%- include("templates/header") %>
+    <h1 class="py-5"> You have logged out! </h1>
+    
+<%- include("templates/footer") %>
