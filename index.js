@@ -90,7 +90,6 @@ app.get('/nosql-injection', async (req,res) => {
 		res.send(`<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`);
 		return;
 	}
-	//console.log("user: "+username);
 
 	const schema = Joi.string().max(100).required();
 	const validationResult = schema.validate(name);
@@ -100,17 +99,13 @@ app.get('/nosql-injection', async (req,res) => {
 	if (validationResult.error != null) { 
         invalid = true;
 	    console.log(validationResult.error);
-	//    res.send("<h1 style='color:darkred;'>A NoSQL injection attack was detected!!</h1>");
-	//    return;
+
 	}	
     var numRows = -1;
-    //var numRows2 = -1;
     try {
     	const result = await userCollection.find({userame: username}).project({username: 1, password: 1, _id: 1}).toArray();
-    	//const result2 = await userCollection.find("{name: "+name).project({username: 1, password: 1, _id: 1}).toArray(); //mongoDB already prevents using catenated strings like this
-        //console.log(result);
+
         numRows = result.length;
-        //numRows2 = result2.length;
     }
     catch (err) {
         console.log(err);
@@ -120,16 +115,7 @@ app.get('/nosql-injection', async (req,res) => {
 
     console.log(`invalid: ${invalid} - numRows: ${numRows} - user: `,name);
 
-    // var query = {
-    //     $where: "this.name === '" + req.body.username + "'"
-    // }
-
-    // const result2 = await userCollection.find(query).toArray(); //$where queries are not allowed.
-    
-    // console.log(result2);
-
     res.send(`<h1>Hello</h1> <h3> num rows: ${numRows}</h3>`); 
-    //res.send(`<h1>Hello</h1>`);
 
 });
 
@@ -155,14 +141,9 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/loggedin', (req, res) => {
-    // req.session.isAuth = true;
-    // console.log(req.session);
-    // var name = await userCollection.find({ email: req.session.email }).project({}).toArray();
+    var isAuthenticated = req.session.authenticated;
 
-    // const html =
-    // `<h1>Hello ${name[0].username} !</h1>
-    // `; // , {authenticated: req.session.authenticated}
-    res.render("loggedin");
+    res.render("loggedin", { authenticated: isAuthenticated });
 });
 
 app.post('/submitUser', async (req, res) => {
@@ -204,7 +185,7 @@ req.session.username = username;
 req.session.cookie.maxAge = expireTime;
 
 console.log("Inserted user");
-res.redirect("/submitUser");
+res.render("loggedin", {username: username});
 
 });
 
@@ -283,11 +264,6 @@ app.post('/demote/:username', async (req, res) => {
       console.log("User promoted");
 
   });
-
-
-
-
-
 
 
 app.use(express.static(__dirname + "/public"));
